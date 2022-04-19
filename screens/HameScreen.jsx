@@ -1,8 +1,10 @@
 import React, {useContext} from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { MainContext } from '../hooks/MainContext';
+
+const windowheight = Dimensions.get('window').height;
 
 const HameScreen = () => {
 
@@ -15,7 +17,7 @@ const HameScreen = () => {
   }
 
   return (
-    <View>
+    <View style={{marginTop: windowheight * 0.1}}>
       <Text>HameScreen</Text>
       <Text>HameScreen</Text>
       <Text>HameScreen</Text>

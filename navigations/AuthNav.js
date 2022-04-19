@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Splachscreen from '../screens/Splachscreen'
 import LoginScreen from '../screens/LoginScreen';
 import MainNav from './MainNav';
+import DrawerNav from './DrawerNav';
+
 import { MainContext } from '../hooks/MainContext';
 
 const Stack = createStackNavigator();
@@ -19,7 +21,7 @@ const AuthNav = () => {
       }}
     >
       {auth ?(
-        <Stack.Screen name='Main' component={MainNav} />
+        <Stack.Screen name='Main' component={DrawerNav} />
       ):
         <>
           <Stack.Screen name='splach' component={Splachscreen} />
