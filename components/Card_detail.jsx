@@ -7,13 +7,13 @@ const Card_detail = ({ item }) => {
         <Card style={styles.mycard} >
             <Badge style={{ position: 'absolute', alignSelf: 'flex-end', backgroundColor: '#D9EAF7'}}  >{item.qte}</Badge>
             <View  style={styles.cardView}>
-                <Image source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}} style={styles.image}/>
+                <Image source={{ uri: `${path}/uploads/images/${item.image}`}} style={styles.image}/>
                 <View style={styles.viewDesc}>
-                    <Text numberOfLines={1} style={styles.desc}>{item.nom}</Text>
+                    <Text numberOfLines={1} style={styles.desc}>{item.title}</Text>
                     {/* <View style={{flexDirection: 'row', justifyContent: "space-between", width: '100%'}}><Text numberOfLines={1} style={styles.desc}>{item.nom}</Text><Badge>3</Badge></View> */}
-                    <Text numberOfLines={1} style={styles.desc}>{item.categorie}</Text>
+                    <Text numberOfLines={1} style={styles.desc}>{item.category}</Text>
                     <Text numberOfLines={1} style={styles.desc}>{item.type}</Text>
-                    <Text numberOfLines={1} style={styles.desc}>{item.Deadline}</Text>
+                    <Text numberOfLines={1} style={styles.desc}>{item.deadline}</Text>
                 </View>
             </View>
         </Card>

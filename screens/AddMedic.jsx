@@ -1,10 +1,20 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert,StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Modal, Alert, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import mime from 'mime';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import moment from 'moment';
+import axios from 'axios';
+
+
+
+const today = new Date();
 
 const AddMedic = ( {navigation}) => {
+
     const [title, setTitle]=useState("")
     const [qte, setQte]=useState("")
     const [deadline, setDeadline]=useState("")
@@ -12,6 +22,26 @@ const AddMedic = ( {navigation}) => {
     const [category, setCategory]=useState("")
     const [image, setImage]=useState({})
     const [modal, setModal]=useState(false)
+
+    const [date, setDate] = useState(today);
+
+    const [show, setShow] = useState(false);
+    const [selectedValue, setSelectedValue] = useState("cardio");
+
+    // affiche data picker :: //////////////////////////////////////////////
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+        console.log(moment(date).format('DD/MM/YYYY'));
+    };
+  
+      
+  
+    const showDatepicker = () => {
+        setShow(true);
+    };
+
 
     const pickFromGallery = async()=>{
 
@@ -23,10 +53,7 @@ const AddMedic = ( {navigation}) => {
         })
         // console.log(data);
         if(!data.cancelled){
-          let newfile ={uri:data.uri, 
-                        type:`test/${data.uri.split(".")[1]}`,
-                        name:`test.${data.uri.split(".")[1]}`}
-          handleUpload(newfile)
+            setImage(data)
         }
 
     } 
@@ -46,7 +73,7 @@ const AddMedic = ( {navigation}) => {
 
     } 
 
-    const handleUpload=()=>{
+    const handleUpload= async()=>{
         // const data = new FormData()
         // data.append('file', image )
         // data.append('upload_preset', 'paramedicsApp')
@@ -62,27 +89,44 @@ const AddMedic = ( {navigation}) => {
             type: mime.getType(newImageUri),
             name: newImageUri.split("/").pop(),
         });
-        formData.append('nom', title);
+        formData.append('title', title);
         formData.append('qte', qte);
-        formData.append('deadline', deadline);
+        formData.append('deadline', moment(date).format('DD/MM/YYYY'));
         formData.append('type', type);
-        formData.append('categorie', category);
+        formData.append('category', selectedValue);
 
-        console.log (formData);
-        // fetch("https://api.cloudinary.com/v1_1/dnlnbhq3t/image/upload",{
-        //     method:"post",
-        //     body:data
-        // }).then(res=>res.json()).
-        // then(data=>{
-        //     setImage(data.url)
-        //     setModal(false)
-        // })
+        // console.log (formData);
+        // let response = await axios.post(`${path}/produit/add`, formData);
+
+        // console.log(response.data);
+        let response = await fetch(`${path}/produit/add`,{
+            method:"POST",
+            headers: {
+                Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            },
+            body:formData
+        });
+
+        let result = await response.json();
+        console.log(result);
+
+        Alert.alert("Message", "Votre demande est enregistré", [
+            { text: "fermer" },
+            ]);
     }
 
     return (
         <View style={styles.AppContainer}>
             <ScrollView>
                 <View style={styles.root}>
+
+                    {image.uri&& (
+                        <Image
+                            style={{ width: '80%', height: 250, resizeMode: 'contain', borderRadius: 5, alignSelf: 'center'}} 
+                            source={{ uri: image.uri}}
+                        />
+                    )}
                     <TextInput 
                         label='Title'
                         style={styles.inputStyle}
@@ -99,15 +143,34 @@ const AddMedic = ( {navigation}) => {
                         mode='outlined'
                         theme={theme}
                         onChangeText={text => setQte(text)}
+                        keyboardType='number-pad'
                     /> 
-                    <TextInput 
+                    {/* <TextInput 
                         label='Deadline'
                         style={styles.inputStyle}
                         value={deadline}
                         mode='outlined'
                         theme={theme}
                         onChangeText={text => setDeadline(text)}
-                    />
+                    /> */}
+
+                    <TouchableOpacity 
+                        style={{flexDirection: 'row', color: "#383838", alignItems: 'center', marginLeft: 8 }}
+                        onPress={showDatepicker}
+                    >
+                        <AntDesign name='calendar' size={35} color='#383838' />
+                        <Text style={{ fontSize: 18, color: "#383838"}} >{moment(date).format('DD/MM/YYYY')}</Text>
+                    </TouchableOpacity>
+                    {show && (
+                        <DateTimePicker
+                        // testID="dateTimePicker"
+                        value={date}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChange}
+                        />
+                    )}
                     <TextInput 
                         label='Type'
                         style={styles.inputStyle}
@@ -116,14 +179,26 @@ const AddMedic = ( {navigation}) => {
                         theme={theme}
                         onChangeText={text => setType(text)}
                     /> 
-                    <TextInput 
+                    {/* <TextInput 
                         label='Category'
                         style={styles.inputStyle}
                         value={category}
                         mode='outlined'
                         theme={theme}
                         onChangeText={text => setCategory(text)}
-                    /> 
+                    />  */}
+                    <View style={{}}>
+                        <Picker
+                            selectedValue={selectedValue}
+                            style={{ height: 50, width: 160 }}
+                            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                        >
+                            <Picker.Item label="Cardio" value="cardio" />
+                            <Picker.Item label="Antiviraux" value="cntiviraux" />
+                            <Picker.Item label="Dermatologie" value="cermatologie" />
+                            <Picker.Item label="Antiinflamatoire" value="cntiinflamatoire" />
+                        </Picker>
+                        </View>
                     <Button 
                         icon={image==""?"upload": "check"}
                         mode="contained" 

@@ -1,29 +1,53 @@
-import React, {useState } from 'react'
+import React, {useState, useEffect } from 'react'
 import { View, Text, StyleSheet,TextInput, StatusBar, Image, Dimensions, FlatList} from 'react-native'
 import { Card, FAB, Badge  } from 'react-native-paper'
-
+import axios from 'axios';
 import Card_detail from '../components/Card_detail';
 
 const {width} = Dimensions.get('window');
 
 const Medics = (props) => {
 
-    const data = [
-      {id:1, nom:"Doliprane", categorie:"Médicament", Deadline:"01-06-2023", qte: 5, type: "pills"},
-      {id:2, nom:"Doliprane", categorie:"Produit paramédical", Deadline:"08-10-2029", qte: 5, type: "pills"},
-      {id:3, nom:"Doliprane", categorie:"Médicament", Deadline:"10-02-2025", qte: 5, type: "pills"},
-      {id:4, nom:"Doliprane", categorie:"Médicament", Deadline:"01-06-2023", qte: 5, type: "pills"},
-      {id:5, nom:"Doliprane", categorie:"help", Deadline:"01-06-2023", qte: 5, type: "pills"},
-      {id:6, nom:"Doliprane", categorie:"Médicament", Deadline:"01-06-2023", qte: 5, type: "pills"},
-      {id:7, nom:"Doliprane", categorie:"force", Deadline:"01-06-2023", qte: 5, type: "pills"},
-      {id:8, nom:"Doliprane", categorie:"mecforce", Deadline:"01-06-2023", qte: 5, type: "pills"},
+    // const data = [
+    //   {id:1, nom:"Doliprane", categorie:"Médicament", Deadline:"01-06-2023", qte: 5, type: "pills"},
+    //   {id:2, nom:"Doliprane", categorie:"Produit paramédical", Deadline:"08-10-2029", qte: 5, type: "pills"},
+    //   {id:3, nom:"Doliprane", categorie:"Médicament", Deadline:"10-02-2025", qte: 5, type: "pills"},
+    //   {id:4, nom:"Doliprane", categorie:"Médicament", Deadline:"01-06-2023", qte: 5, type: "pills"},
+    //   {id:5, nom:"Doliprane", categorie:"help", Deadline:"01-06-2023", qte: 5, type: "pills"},
+    //   {id:6, nom:"Doliprane", categorie:"Médicament", Deadline:"01-06-2023", qte: 5, type: "pills"},
+    //   {id:7, nom:"Doliprane", categorie:"force", Deadline:"01-06-2023", qte: 5, type: "pills"},
+    //   {id:8, nom:"Doliprane", categorie:"mecforce", Deadline:"01-06-2023", qte: 5, type: "pills"},
   
   
-    ]
-    const [filterData, setfilterData] = useState(data);
-    const [masterData, setmasterData] = useState(data);
+    // ]
+
+    const [filterData, setfilterData] = useState([]);
+    const [masterData, setmasterData] = useState([]);
     const [search, setsearch] = useState('');
     
+    const fetchdata = async () => {
+
+        let response = await fetch(`${path}/produit`,{
+            method:"GET",
+            headers: {
+                "Content-Type": "application/json"
+            
+            }
+        });
+
+        let result = await response.json();
+        // console.log(result);
+        // console.log(response)
+        if (result.message === "success") {
+            setmasterData(result.data);
+            setfilterData(result.data);
+        }
+    }
+    useEffect(() => {
+        fetchdata();
+    }, [])
+    
+
     const searchFilter = (text) => {
         if(text) {
             const NewData = masterData.filter((item) => {
@@ -68,11 +92,11 @@ const Medics = (props) => {
         </View>
         <FlatList 
             data={filterData}
-            renderItem={({item})=>{
+            renderItem={({item, i})=>{
                 // return renderList(item)
-                return ( <Card_detail item={item}  /> )
+                return ( <Card_detail  item={item}  /> )
             }}
-            keyExtractor={item=>`${item.id}`}
+            keyExtractor={item=>`${item._id}`}
         />
         <FAB style={styles.fab}
             small={false}
