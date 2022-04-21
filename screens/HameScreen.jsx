@@ -9,8 +9,8 @@ const windowheight = Dimensions.get('window').height;
 const HameScreen = () => {
 
   let {auth, setChanged} = useContext(MainContext);
+  // let x = JSON.parse(auth)
   console.log(auth)
-
   const Logout = async () => {
     await AsyncStorage.removeItem('user');
     return setChanged("Loggedout")
@@ -24,7 +24,7 @@ const HameScreen = () => {
       <Text>HameScreen</Text>
       <Text>HameScreen</Text>
       {auth &&
-      <Text>{auth.email}</Text>
+      <Text>{auth.name}</Text>
       }
 
       <TouchableOpacity

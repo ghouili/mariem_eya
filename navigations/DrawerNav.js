@@ -8,6 +8,7 @@ import { MainContext } from '../hooks/MainContext';
 import MainNav from './MainNav';
 import Medics from '../screens/Medics';
 import AddMedic from '../screens/AddMedic';
+import DrawerContent from '../screens/DrawerContent';
 
 const Drawer = createDrawerNavigator();
 const MainNavStack = createStackNavigator();
@@ -20,15 +21,18 @@ const windowWindth = Dimensions.get('window').width;
 
 
 const DrawerNav = () => {
+
+  // const {auth} = useContext(MainContext);
   return (
     <Drawer.Navigator
+    // drawerContent={props => {<DrawerContent {...props}  />}}
         screenOptions={{
             headerShown: false,
             // headerTransparent: true,
             
         }}
     >
-        {/* <Drawer.Screen  name='Posts' component={MainNavStackScreen} /> */}
+        <Drawer.Screen  name='Posts' component={MainNavStackScreen} />
         <Drawer.Screen  name='Medicament' component={MedicsStackScreen} />
         <Drawer.Screen  name='Ajout de medicament' component={AddMedickScreen} />
     </Drawer.Navigator>
@@ -59,17 +63,18 @@ const MainNavStackScreen = ({navigation}) => {
               
             <MainNavStack.Screen name="HomeStack" component={MainNav} options={{
                 headerLeft: () =>(
-                    < TouchableOpacity style={{marginLeft: "10%"}} onPress={() =>navigation.openDrawer()} >
-                    <Icon name="md-menu-sharp" size={30} color="#000"   />
-                    </TouchableOpacity>
+                  < TouchableOpacity style={{marginLeft: "10%"}} onPress={() =>navigation.openDrawer()} >
+                  <Icon name="md-menu-sharp" size={30} color="#000"   />
+                  </TouchableOpacity>
                 ),
                 headerRight: () =>(
-                    <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  >
-                        <Image  
-                            style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
-                            source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
-                        />
-                    </TouchableOpacity>
+                  <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  
+                  >
+                    <Image  
+                      style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
+                      source={{ uri: `${path}/uploads/images/${auth.avatar}`}}
+                    />
+                  </TouchableOpacity>
                 ),
               
             }} />
@@ -109,7 +114,7 @@ const MedicsStackScreen = ({navigation}) => {
                     <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  >
                         <Image  
                             style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
-                            source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
+                            source={{ uri: `${path}/uploads/images/${auth.avatar}`}}
                         />
                     </TouchableOpacity>
                 ),

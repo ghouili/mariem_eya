@@ -15,7 +15,7 @@ const Splachscreen = ({ navigation }) => {
             <Animatable.Image
                 animation="zoomInDown" 
                 style={{width: windowWidth* 0.6, height: windowHeight * 0.28, marginTop: "10%"}}
-                source={require('../assets/dawini.png')}
+                source={require('../../assets/dawini.png')}
             />
         </View>
 

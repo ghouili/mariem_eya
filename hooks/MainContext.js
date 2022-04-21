@@ -10,9 +10,12 @@ const ProvidContext = ({ children }) => {
     const [changed, setChanged] = useState(null);
 
     useEffect( async () => {
-      const jsonValue = await AsyncStorage.getItem('user')
-      jsonValue != null ? JSON.parse(jsonValue) : null;
-      return setAuth(jsonValue);
+      const jsonValue = await AsyncStorage.getItem('user');
+      let data = null;
+      if (jsonValue != null) {
+        data = JSON.parse(jsonValue) ;
+      }
+      setAuth(data);
     }, [changed])
     
 

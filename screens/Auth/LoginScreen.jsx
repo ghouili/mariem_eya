@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import * as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { MainContext } from '../hooks/MainContext';
+import { MainContext } from '../../hooks/MainContext';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -12,47 +12,45 @@ const windowHeight = Dimensions.get('window').height;
 const LoginScreen = ({ navigation }) => {
 
     let { setChanged } = useContext(MainContext);
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [secure, setSecure] = useState(false);
 
     const submit = async () => {
-        const jsonValue = JSON.stringify({name: 'mariem + eya', email: 'pfe@gmail.com', avatar: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'});
-        await AsyncStorage.setItem('user', jsonValue);
-        setChanged("logged");
-        // let result = await fetch(`${path}/user/login`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         email: username,
-        //         password: password,
-        //     })
-        // });
 
-        // //convertin responce to json
-        // let resultData = await result.json();
-        // //checking if there is data
-        // if (!resultData) {
-        //     return Alert.alert(
-        //         'ERROR',
-        //         "Nothing came back",
-        //         [{ text: 'fermer' }]
-        //     );
-        // }
+        let result = await fetch(`${path}/user/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            })
+        });
 
-        // if (resultData.message === 'success') {
-        //     const jsonValue = JSON.stringify(resultData.data);
-        //     await AsyncStorage.setItem('user', jsonValue);
-        //     setChanged("logged");
+        //convertin responce to json
+        let resultData = await result.json();
+        //checking if there is data
+        if (!resultData) {
+            return Alert.alert(
+                'ERROR',
+                "Nothing came back",
+                [{ text: 'fermer' }]
+            );
+        }
+
+        if (resultData.message === 'success') {
+            const jsonValue = JSON.stringify(resultData.data);
+            await AsyncStorage.setItem('user', jsonValue);
+            setChanged("logged");
             
-        //     Alert.alert(
-        //         'Success',
-        //         `Welcome Mr(s) ${resultData.data.email} `,
-        //         [{ text: 'fermer' }]
-        //     );
-        // }
+            Alert.alert(
+                'Success',
+                `Welcome Mr(s) ${resultData.data.email} `,
+                [{ text: 'fermer' }]
+            );
+        }
 
     }
 
@@ -63,7 +61,7 @@ const LoginScreen = ({ navigation }) => {
             <Animatable.Image
                 animation="zoomInDown" 
                 style={{width: windowWidth* 0.6, height: windowHeight * 0.28}}
-                source={require('../assets/medics.png')}
+                source={require('../../assets/medics.png')}
             />
         </View>
 
@@ -74,7 +72,7 @@ const LoginScreen = ({ navigation }) => {
                 <TextInput
                     style={{width: windowWidth * 0.7,borderWidth: 1, paddingLeft: "3%", borderRadius: 10, fontSize: 16, marginLeft: windowWidth * 0.05, paddingVertical: "1%", borderColor: "#fff", color: "#fff"}}
                     placeholderTextColor="#fff"
-                    onChangeText={(text)=> setUsername(text)}
+                    onChangeText={(text)=> setEmail(text)}
                     placeholder="Username"
                     keyboardType="default"
                 />
@@ -102,7 +100,7 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
             <View style={{ flexDirection: "row", alignSelf: 'center', marginTop: "2%"}}>
                 <Text style={{color: "#fff"}}>If you don't have an account </Text><TouchableOpacity
-                 onPress={() => navigation.navigate('splach')}
+                 onPress={() => navigation.navigate('register')}
                 ><Text style={{ color: "#63CCFF"}}>Sign Up</Text></TouchableOpacity>
             </View>
         </Animatable.View>
