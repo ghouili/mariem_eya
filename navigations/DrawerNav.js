@@ -9,11 +9,13 @@ import MainNav from './MainNav';
 import Medics from '../screens/Medics';
 import AddMedic from '../screens/AddMedic';
 import DrawerContent from '../screens/DrawerContent';
+import Medic_cards from '../screens/Medic_cards';
 
 const Drawer = createDrawerNavigator();
 const MainNavStack = createStackNavigator();
 const MedicsStack = createStackNavigator();
 const AddMedicStack = createStackNavigator();
+const Medic_cardsStack = createStackNavigator();
 
 const windowheight = Dimensions.get('window').height;
 const windowWindth = Dimensions.get('window').width;
@@ -32,7 +34,8 @@ const DrawerNav = () => {
             
         }}
     >
-        <Drawer.Screen  name='Posts' component={MainNavStackScreen} />
+        <Drawer.Screen  name='Home' component={MainNavStackScreen} />
+        <Drawer.Screen  name='Med' component={Medic_cardsStackScreen} />
         <Drawer.Screen  name='Medicament' component={MedicsStackScreen} />
         <Drawer.Screen  name='Ajout de medicament' component={AddMedickScreen} />
     </Drawer.Navigator>
@@ -44,7 +47,7 @@ export default DrawerNav
 const MainNavStackScreen = ({navigation}) => {
     
     const {auth} = useContext(MainContext);
-    console.log(auth)
+    // console.log(auth)
     return (
         <MainNavStack.Navigator screenOptions={{
             headerStyle:{
@@ -87,7 +90,7 @@ const MainNavStackScreen = ({navigation}) => {
 const MedicsStackScreen = ({navigation}) => {
     
     const {auth} = useContext(MainContext);
-    console.log(auth)
+    // console.log(auth)
     return (
         <MedicsStack.Navigator screenOptions={{
             headerStyle:{
@@ -127,40 +130,80 @@ const MedicsStackScreen = ({navigation}) => {
 
 const AddMedickScreen = ({navigation}) => {
     
-    const {auth} = useContext(MainContext);
-    console.log(auth)
-    return (
-        <AddMedicStack.Navigator screenOptions={{
-            headerStyle:{
-              // backgroundColor: '#80cbc4',
-              height: windowheight * 0.08
-            },
-            headerTintColor: '#fff',
-            headerTintStyle:{
-              fontWeight: 'bold'
-            },
-            headerTransparent: true,
-            headerTitle: '',
-            
+  const {auth} = useContext(MainContext);
+  // console.log(auth)
+  return (
+    <AddMedicStack.Navigator screenOptions={{
+      headerStyle:{
+        // backgroundColor: '#80cbc4',
+        height: windowheight * 0.08
+      },
+      headerTintColor: '#fff',
+      headerTintStyle:{
+        fontWeight: 'bold'
+      },
+      headerTransparent: true,
+      headerTitle: '',
         
-          }}>
-              
-            <AddMedicStack.Screen name="Medics" component={AddMedic} options={{
-                headerLeft: () =>(
-                    < TouchableOpacity style={{marginLeft: "10%"}} onPress={() =>navigation.openDrawer()} >
-                    <Icon name="md-menu-sharp" size={30} color="#000"   />
-                    </TouchableOpacity>
-                ),
-                headerRight: () =>(
-                    <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  >
-                        <Image  
-                            style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
-                            source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
-                        />
-                    </TouchableOpacity>
-                ),
-              
-            }} />
-          </AddMedicStack.Navigator>
+    
+    }}>
+          
+      <AddMedicStack.Screen name="Medics" component={AddMedic} options={{
+        headerLeft: () =>(
+          < TouchableOpacity style={{marginLeft: "10%"}} onPress={() =>navigation.openDrawer()} >
+          <Icon name="md-menu-sharp" size={30} color="#000"   />
+          </TouchableOpacity>
+        ),
+        headerRight: () =>(
+          <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  >
+            <Image  
+              style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
+              source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
+            />
+          </TouchableOpacity>
+        ),
+        
+      }} />
+      </AddMedicStack.Navigator>
     )
+}
+
+const Medic_cardsStackScreen = ({navigation}) => {
+    
+  const {auth} = useContext(MainContext);
+  // console.log(auth)
+  return (
+    <Medic_cardsStack.Navigator screenOptions={{
+      headerStyle:{
+        // backgroundColor: '#80cbc4',
+        height: windowheight * 0.08
+      },
+      headerTintColor: '#fff',
+      headerTintStyle:{
+        fontWeight: 'bold'
+      },
+      headerTransparent: true,
+      headerTitle: '',
+        
+    
+    }}>
+          
+      <Medic_cardsStack.Screen name="Medics" component={Medic_cards} options={{
+        headerLeft: () =>(
+          < TouchableOpacity style={{marginLeft: "10%"}} onPress={() =>navigation.openDrawer()} >
+          <Icon name="md-menu-sharp" size={30} color="#000"   />
+          </TouchableOpacity>
+        ),
+        headerRight: () =>(
+          <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  >
+            <Image  
+              style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
+              source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
+            />
+          </TouchableOpacity>
+        ),
+        
+      }} />
+    </Medic_cardsStack.Navigator>
+  )
 }
