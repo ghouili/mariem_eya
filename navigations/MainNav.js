@@ -3,12 +3,13 @@ import { View, Text } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Tab = createBottomTabNavigator();
 
 import HomeScreen from '../screens/HameScreen';
-import DetailScreen from '../screens/DetailScreen';
-
+import DonateScreen from '../screens/DonateScreen';
+// import grid_example from '../screens/grid_example';
 const MainNav = () => {
   return (
     <Tab.Navigator
@@ -26,11 +27,11 @@ const MainNav = () => {
                 )
             }}    
         />
-        <Tab.Screen name="Details" 
-            component={DetailScreen} 
+        <Tab.Screen name="Donate" 
+            component={DonateScreen} 
             options={{
                 tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="account-details-outline" color={color} size={26} />
+                    <FontAwesome5 name="hand-holding-medical" color={color} size={26} />
                 )
             }} 
         />

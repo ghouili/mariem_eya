@@ -1,9 +1,9 @@
 import React, {useState, useEffect } from 'react'
-import { View, Text, StyleSheet,TextInput, StatusBar, Image, Dimensions, FlatList} from 'react-native'
+import { View, Text, StyleSheet,TextInput, StatusBar, Image, Dimensions, FlatList, ScrollView} from 'react-native'
 import { Card, FAB, Badge  } from 'react-native-paper'
 import axios from 'axios';
 import Card_detail from '../components/Card_detail';
-
+import Card_Medic from '../components/Card_Medic';
 const {width} = Dimensions.get('window');
 
 const Medics = (props) => {
@@ -36,13 +36,13 @@ const Medics = (props) => {
         });
 
         let result = await response.json();
-        // console.log(result);
-        // console.log(response)
         if (result.message === "success") {
             setmasterData(result.data);
             setfilterData(result.data);
         }
     }
+
+
     useEffect(() => {
         fetchdata();
     }, [])
@@ -51,7 +51,7 @@ const Medics = (props) => {
     const searchFilter = (text) => {
         if(text) {
             const NewData = masterData.filter((item) => {
-                const itemData = item.categorie ? item.categorie.toUpperCase() : ''.toUpperCase();
+                const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
                 const textData = text.toUpperCase();
                 return itemData.indexOf(textData) > -1;
             });
@@ -63,26 +63,8 @@ const Medics = (props) => {
         }
     }
 
-// const renderList = ((item)=>{
-//      return(
-//         <Card style={styles.mycard} >
-//             <Badge style={{ position: 'absolute', alignSelf: 'flex-end', backgroundColor: '#D9EAF7'}}  >{item.qte}</Badge>
-//             <View  style={styles.cardView}>
-//                 <Image source={{ uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}} style={styles.image}/>
-//                 <View style={styles.viewDesc}>
-//                     <Text numberOfLines={1} style={styles.desc}>{item.nom}</Text>
-//                     {/* <View style={{flexDirection: 'row', justifyContent: "space-between", width: '100%'}}><Text numberOfLines={1} style={styles.desc}>{item.nom}</Text><Badge>3</Badge></View> */}
-//                     <Text numberOfLines={1} style={styles.desc}>{item.categorie}</Text>
-//                     <Text numberOfLines={1} style={styles.desc}>{item.type}</Text>
-//                     <Text numberOfLines={1} style={styles.desc}>{item.Deadline}</Text>
-//                 </View>
-//             </View>
-//         </Card>
-//   )
-// })
-
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
         <View style={styles.SearchInputContainer}>
             <TextInput 
                 style={styles.searchInput} 
@@ -90,20 +72,30 @@ const Medics = (props) => {
                 onChangeText={(text) => searchFilter(text)}
             ></TextInput>
         </View>
-        <FlatList 
+        <View style={{  display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+
+            {filterData.map(({image, _id, title}, idx)=> {
+                return (
+                    <View key={idx}>
+                        <Card_Medic  image={image} title={title} id={_id} />
+                    </View>
+                )
+            })}
+        </View>
+        {/* <FlatList 
             data={filterData}
             renderItem={({item, i})=>{
                 // return renderList(item)
                 return ( <Card_detail  item={item}  /> )
             }}
             keyExtractor={item=>`${item._id}`}
-        />
-        <FAB style={styles.fab}
+        /> */}
+        {/* <FAB style={styles.fab}
             small={false}
             icon="plus"
             onPress={()=>props.navigation.navigate('Ajout de medicament')}
-        />
-    </View>
+        /> */}
+    </ScrollView>
   )
 }
 

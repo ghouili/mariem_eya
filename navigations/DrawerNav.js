@@ -35,8 +35,8 @@ const DrawerNav = () => {
         }}
     >
         <Drawer.Screen  name='Home' component={MainNavStackScreen} />
-        <Drawer.Screen  name='Med' component={Medic_cardsStackScreen} />
-        <Drawer.Screen  name='Medicament' component={MedicsStackScreen} />
+        <Drawer.Screen  name='Medicament' component={Medic_cardsStackScreen} />
+        {/* <Drawer.Screen  name='Medicament' component={MedicsStackScreen} /> */}
         <Drawer.Screen  name='Ajout de medicament' component={AddMedickScreen} />
     </Drawer.Navigator>
   )
