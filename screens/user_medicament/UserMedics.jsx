@@ -1,19 +1,21 @@
 import React, {useContext, useState, useEffect} from 'react'
-import { View, Text, TouchableOpacity, Dimensions, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions, StyleSheet, TextInput } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FAB } from 'react-native-paper';
 
 import {Picker} from '@react-native-picker/picker';
 
 
-import Card_Medic from '../components/Card_Medic';
+import Card_Medic from '../../components/Card_Medic';
 
-import { MainContext } from '../hooks/MainContext';
+import { MainContext } from '../../hooks/MainContext';
+import { NavigationContainer } from '@react-navigation/native';
 
 const windowheight = Dimensions.get('window').height;
 const windowwidth = Dimensions.get('window').width;
 
-const Medic_cards = () => {
+const UserMedics = ({ navigation }) => {
 
   let {auth, setChanged} = useContext(MainContext);
   const [selectedValue, setSelectedValue] = useState('');
@@ -91,6 +93,7 @@ const Medic_cards = () => {
         style={{width: '100%', height: windowheight * 0.35}} 
       >
 
+            {/* <Text style={{}}>Your Donations</Text> */}
         <View style={{ width: '100%', flexDirection: 'row', marginTop: '30%', justifyContent: 'space-evenly', alignItems: 'center'}} >
           <TextInput
               placeholder='Search ..'
@@ -113,19 +116,47 @@ const Medic_cards = () => {
 
       </LinearGradient>
 
-      <View style={{  display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop : -windowheight * 0.07, paddingHorizontal: 15}}>
+      <View style={{  display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop : -windowheight * 0.07, paddingHorizontal: 5}}>
 
         {filterData.map(({image, _id, title}, idx)=> {
             return (
-                <View key={idx}>
+                <TouchableOpacity key={idx}
+                    onPress={() => navigation.push('Details_UserMedic', {id: _id})}
+                >
                     <Card_Medic  image={image} title={title} id={_id} />
-                </View>
+                </TouchableOpacity>
             )
         })}
       </View>
 
+        <FAB
+            style={styles.fab}
+            // small
+            icon="plus"
+            color='#fff'
+            // onPress={logout}
+            onPress={() => navigation.push('Add-Medics')}
+        />
     </View>
   )
 }
 
-export default Medic_cards
+export default UserMedics
+
+const styles = StyleSheet.create({
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: windowheight ,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#219EBA',
+
+    },
+})

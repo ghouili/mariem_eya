@@ -32,15 +32,15 @@ const LoginScreen = ({ navigation }) => {
         //convertin responce to json
         let resultData = await result.json();
         //checking if there is data
-        if (!resultData) {
-            return Alert.alert(
-                'ERROR',
-                "Nothing came back",
-                [{ text: 'fermer' }]
-            );
-        }
+        // if (!resultData) {
+        //     return Alert.alert(
+        //         'ERROR',
+        //         "Nothing came back",
+        //         [{ text: 'fermer' }]
+        //     );
+        // }
 
-        if (resultData.message === 'success') {
+        if (resultData.success === true) {
             const jsonValue = JSON.stringify(resultData.data);
             await AsyncStorage.setItem('user', jsonValue);
             setChanged("logged");
@@ -50,6 +50,13 @@ const LoginScreen = ({ navigation }) => {
                 `Welcome Mr(s) ${resultData.data.email} `,
                 [{ text: 'fermer' }]
             );
+        } else {
+            Alert.alert(
+                'Error',
+                resultData.message,
+                [{ text: 'fermer' }]
+            );
+
         }
 
     }
@@ -74,7 +81,8 @@ const LoginScreen = ({ navigation }) => {
                     placeholderTextColor="#fff"
                     onChangeText={(text)=> setEmail(text)}
                     placeholder="Username"
-                    keyboardType="default"
+                    keyboardType="email-address"
+                    autoCapitalize='none'
                 />
             </View>
 
@@ -87,6 +95,7 @@ const LoginScreen = ({ navigation }) => {
                     placeholder="password"
                     secureTextEntry={secure}
                     keyboardType="default"
+                    autoCapitalize='none'
                 />
             </View>
             

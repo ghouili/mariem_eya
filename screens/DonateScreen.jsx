@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, Text, Dimensions } from 'react-native'
+import { View, Text, Dimensions, StyleSheet } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
 import Entypo from 'react-native-vector-icons/Entypo';
+
 
 const windowwidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -43,7 +45,11 @@ const DonateScreen = () => {
   
   return (
     <View style={{flex: 1, paddingTop: windowheight * 0.1}}>
-
+      <LinearGradient
+            // Background Linear Gradient
+            colors={['#248DE7', 'transparent']}
+            style={styles.background}
+        />
       <View style={{paddingHorizontal: 20}}>
         <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 2}}>
           <View style={{width: 30, height: 30, borderWidth: 1, borderRadius: 50, display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: 5, borderColor: color_etape1}}>
@@ -90,3 +96,13 @@ const DonateScreen = () => {
 }
 
 export default DonateScreen
+
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: windowheight ,
+},
+})

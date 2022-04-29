@@ -21,7 +21,7 @@ const RegisterScreen = ({ navigation }) => {
     const [nom, setNom] = useState('');
     const [prenom, setPrenom] = useState('');
     const [email, setEmail] = useState('');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(null);
     const [visible, setVisible] = useState(false);
     const [adresse, setAdresse] = useState('');
     const [tel, setTel] = useState();
@@ -65,16 +65,17 @@ const RegisterScreen = ({ navigation }) => {
         // const jsonValue = JSON.stringify({name: 'mariem + eya', email: 'pfe@gmail.com', avatar: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'});
         // await AsyncStorage.setItem('user', jsonValue);
         // setChanged("logged");
-        const fileUri = image.uri;
-        const newImageUri = "file:///" + fileUri.split("file:/").join("");
-        
         const formData = new FormData();
-        
-        formData.append("avatar", {
-            uri: newImageUri,
-            type: mime.getType(newImageUri),
-            name: newImageUri.split("/").pop(),
-        });
+        if (image) {
+
+            const fileUri = image.uri;
+            const newImageUri = "file:///" + fileUri.split("file:/").join("");        
+            formData.append("avatar", {
+                uri: newImageUri,
+                type: mime.getType(newImageUri),
+                name: newImageUri.split("/").pop(),
+            });
+        }
         formData.append('email', email);
         formData.append('nom', nom);
         formData.append('prenom', prenom);
@@ -161,6 +162,7 @@ const RegisterScreen = ({ navigation }) => {
                         onChangeText={(text)=> setEmail(text)}
                         placeholder="Email"
                         keyboardType="email-address"
+                        autoCapitalize='none'
                     />
                 </View>
 
@@ -171,6 +173,7 @@ const RegisterScreen = ({ navigation }) => {
                         onChangeText={(text)=> setNom(text)}
                         placeholder="Nom"
                         keyboardType="default"
+                        autoCapitalize='none'
                     />
                 
                     <TextInput
@@ -179,6 +182,7 @@ const RegisterScreen = ({ navigation }) => {
                         onChangeText={(text)=> setPrenom(text)}
                         placeholder="Prenom"
                         keyboardType="default"
+                        autoCapitalize='none'
                     />
 
                 </View>
@@ -190,6 +194,7 @@ const RegisterScreen = ({ navigation }) => {
                         onChangeText={(text)=> setAdresse(text)}
                         placeholder="Adresse"
                         keyboardType="default"
+                        autoCapitalize='none'
                     />
                 </View>
                 
@@ -200,6 +205,7 @@ const RegisterScreen = ({ navigation }) => {
                         onChangeText={(text)=> setTel(text)}
                         placeholder="Numero de Telephone"
                         keyboardType="numeric"
+                        autoCapitalize='none'
                     />
                 </View>
                 
@@ -211,6 +217,7 @@ const RegisterScreen = ({ navigation }) => {
                         placeholder="Password"
                         // keyboardType="default"
                         secureTextEntry={secure}
+                        autoCapitalize='none'
                     />
                 </View>
 

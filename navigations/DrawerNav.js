@@ -73,10 +73,12 @@ const MainNavStackScreen = ({navigation}) => {
                 headerRight: () =>(
                   <TouchableOpacity style={{marginRight: windowWindth *0.03, marginTop: windowheight * 0.01 }}  
                   >
-                    <Image  
-                      style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
-                      source={{ uri: `${path}/uploads/images/${auth.avatar}`}}
-                    />
+                    {auth &&
+                      <Image  
+                        style={{width: windowWindth * 0.12, height: windowheight * 0.06, borderRadius: 150 }}
+                        source={{ uri: `${path}/uploads/images/${auth.avatar}`}}
+                      />
+                    }
                   </TouchableOpacity>
                 ),
               
