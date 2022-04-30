@@ -12,7 +12,7 @@ export default function App() {
 
   //localhost won't work cuz u running the code on your phne using expo so the phone won't know "localhost "
   //we have to use the ip adress " opn CMD and use command "ipconfig" and use the sans-fil IPV06 u will find ""
-  global.path = 'http://192.168.1.101:4000';
+  global.path = 'http://192.168.1.100:4000';
 
   return (
     <ProvidContext>

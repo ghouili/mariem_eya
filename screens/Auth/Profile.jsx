@@ -15,7 +15,8 @@ const WindowHeight = Dimensions.get('window').height;
 
 const Profile = () => {
 
-    const { auth, setChanged } = useContext(MainContext); const [password, setPassword] = useState(null);
+    const { auth, setChanged } = useContext(MainContext); 
+    const [password, setPassword] = useState(null);
     const [visible1, setVisible1] = useState(false);
     const [image, setImage] = useState(null);
     const [nom, setNom] = useState('')
@@ -35,7 +36,7 @@ const Profile = () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
-          aspect: [4, 3],
+          aspect: [1, 1],
           quality: 1,
         });
     
@@ -52,7 +53,7 @@ const Profile = () => {
         let result = await ImagePicker.launchCameraAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
-          aspect: [4, 3],
+          aspect: [1, 1],
           quality: 1,
         });
     
@@ -78,7 +79,7 @@ const Profile = () => {
             setAdresse(resultData.data.adresse);
             setEmail(resultData.data.email);
             setAvatar(resultData.data.avatar);
-            // setTel(resultData.data.tel);
+            setTel(resultData.data.tel);
         } else {
             Alert.alert(
                 'ERROR',
@@ -103,9 +104,11 @@ const Profile = () => {
 
         const url = `${path}/user/${auth._id}`;
         const formData = new FormData();
+
         if(image) {
             const fileUri = image.uri;
             const newImageUri = "file:///" + fileUri.split("file:/").join("");
+            
             formData.append("avatar", {
             uri: newImageUri,
             type: mime.getType(newImageUri),
@@ -119,6 +122,7 @@ const Profile = () => {
         formData.append("email", email);
         formData.append("prenom", prenom);
         formData.append("adresse", adresse);
+        formData.append("tel", tel);
         
         
         const options = {
@@ -132,7 +136,8 @@ const Profile = () => {
         // console.log(formData);
 
         let response = await fetch( url, options);
-
+        
+        // console.log(response);
         let result = await response.json();
         console.log('====================================');
         console.log(result);
@@ -144,7 +149,7 @@ const Profile = () => {
             await AsyncStorage.removeItem('user');
             const jsonValue = JSON.stringify(result.data);
             await AsyncStorage.setItem('user', jsonValue);
-            setChanged("updated");
+            setChanged(new Date());
             fetchData();
             
         } else {
@@ -177,9 +182,10 @@ const Profile = () => {
                     :
                         <Image  
                             style={{width: '100%', height: 80, borderRadius: 150}}
+                            // source={{ uri: `http://192.168.1.100:4000/uploads/images/avatar.png`}}
                             source={{ uri: `${path}/uploads/images/${avatar}`}}
                         /> 
-                    }
+                    } 
                 </TouchableOpacity>
                 <TextInput
                     style={{width: '33%', height: WindowHeight * 0.06, marginBottom: "4%", borderWidth: 1, paddingHorizontal: "5%", borderRadius: 5, backgroundColor: 'rgba(230,238,241,1)', borderColor: 'white', fontSize: 16, fontWeight: '700'}}
@@ -212,15 +218,15 @@ const Profile = () => {
                     autoCapitalize='none'
                 />
                 
-                {/* <TextInput
+                <TextInput
                     style={{width: '100%', height: WindowHeight * 0.06, marginBottom: "4%", borderWidth: 1, paddingHorizontal: "5%", borderRadius: 5, backgroundColor: 'rgba(230,238,241,1)', borderColor: 'white', fontSize: 16, fontWeight: '700'}}
                     onChangeText={(text) => setTel(text)}
-                    value={tel}
+                    value={tel.toString()}
                     placeholderTextColor='#6d6e6e'
-                    placeholder={`${tel}`}
+                    placeholder={` ${tel}`}
                     keyboardType="default"
                     autoCapitalize='none'
-                /> */}
+                />
             
                 <TextInput
                     style={{width: '100%', height: WindowHeight * 0.06, marginBottom: "4%", borderWidth: 1, paddingHorizontal: "5%", borderRadius: 5, backgroundColor: 'rgba(230,238,241,1)', borderColor: 'white', fontSize: 16, fontWeight: '700'}}

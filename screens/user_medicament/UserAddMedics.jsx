@@ -8,7 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import axios from 'axios';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {MainContext} from '../../hooks/MainContext';
 
 
@@ -142,6 +142,12 @@ const UserAddMedics = ( {navigation}) => {
     return (
         <View style={styles.AppContainer}>
             <ScrollView>
+            <TouchableOpacity
+                style={{alignItems: 'flex-start', paddingHorizontal: "5%", paddingVertical: "3%"}}
+                onPress={() => navigation.push('Medics')}
+            >
+                <Ionicons name='arrow-back-circle-outline' size={35} color='#000' />
+            </TouchableOpacity>
                 <View style={styles.root}>
 
                     {image && (

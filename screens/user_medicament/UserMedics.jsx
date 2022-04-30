@@ -32,19 +32,21 @@ const UserMedics = ({ navigation }) => {
   
   const fetchdata = async () => {
 
-      let response = await fetch(`${path}/produit`,{
-          method:"GET",
-          headers: {
-              "Content-Type": "application/json"
-          
-          }
-      });
+    let response = await fetch(`${path}/produit/`,{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: auth._id
+        })
+    });
 
-      let result = await response.json();
-      if (result.message === "success") {
-          setmasterData(result.data);
-          setfilterData(result.data);
-      }
+    let result = await response.json();
+    if (result.message === "success") {
+        setmasterData(result.data);
+        setfilterData(result.data);
+    }
   }
 
 
@@ -118,15 +120,23 @@ const UserMedics = ({ navigation }) => {
 
       <View style={{  display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop : -windowheight * 0.07, paddingHorizontal: 5}}>
 
-        {filterData.map(({image, _id, title}, idx)=> {
-            return (
-                <TouchableOpacity key={idx}
-                    onPress={() => navigation.push('Details_UserMedic', {id: _id})}
-                >
-                    <Card_Medic  image={image} title={title} id={_id} />
-                </TouchableOpacity>
-            )
-        })}
+        {filterData.length === 0 ?
+          <View style={{width: '100%', marginTop: '15%'}}  >
+            <Text style={{fontSize: 35, color: 'grey', alignSelf: 'center'}}>No donations!</Text>
+          </View>
+        :
+          <>
+            {filterData.map(({image, _id, title}, idx)=> {
+              return (
+                  <TouchableOpacity key={idx}
+                      onPress={() => navigation.push('Details_UserMedic', {id: _id})}
+                  >
+                      <Card_Medic  image={image} title={title} id={_id} />
+                  </TouchableOpacity>
+              )
+            })}
+          </>
+        }
       </View>
 
         <FAB
